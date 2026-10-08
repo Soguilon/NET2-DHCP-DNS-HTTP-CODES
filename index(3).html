@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Complete Packet Tracer Guide — Router DHCP, DHCP Relay, Dedicated DHCP Server, DNS and HTTP configuration.">
+<title>Complete Packet Tracer Guide</title>
+<style>
+:root {
+  --black:#0a0a0a;
+  --dark:#121212;
+  --panel:#1a1a1a;
+  --panel2:#222;
+  --gray:#bdbdbd;
+  --light:#e8e8e8;
+  --lighter:#f2f2f2;
+  --white:#fff;
+  --border:#3a3a3a;
+  --accent:#d6d6d6;
+  --code:#101010;
+}
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  margin:0;
+  background:var(--black);
+  color:var(--light);
+  font-family:Arial, Helvetica, sans-serif;
+  line-height:1.7;
+}
+header {
+  background:linear-gradient(135deg,#050505,#202020);
+  border-bottom:1px solid #444;
+  padding:42px 20px 34px;
+  text-align:center;
+}
+header h1 {
+  margin:0 0 10px;
+  font-size:clamp(1.8rem,4vw,3rem);
+  color:var(--white);
+}
+header p {
+  margin:0 auto;
+  max-width:850px;
+  color:#cfcfcf;
+  font-size:1rem;
+}
+.toolbar {
+  position:sticky;
+  top:0;
+  z-index:20;
+  background:rgba(10,10,10,.96);
+  border-bottom:1px solid #333;
+  padding:12px 16px;
+  backdrop-filter:blur(8px);
+}
+.toolbar-inner {
+  max-width:1100px;
+  margin:auto;
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+#search {
+  width:100%;
+  background:#ededed;
+  color:#080808;
+  border:2px solid #777;
+  border-radius:8px;
+  padding:10px 13px;
+  font-size:15px;
+  outline:none;
+}
+#search:focus { border-color:#fff; box-shadow:0 0 0 2px #555; }
+main {
+  width:min(1100px, calc(100% - 28px));
+  margin:28px auto 70px;
+}
+article {
+  background:#151515;
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:clamp(18px,3vw,34px);
+  box-shadow:0 8px 28px rgba(0,0,0,.28);
+}
+h1,h2,h3,h4,h5,h6 { color:var(--white); line-height:1.25; }
+h1 { font-size:2rem; margin-top:0; }
+h2 {
+  font-size:1.55rem;
+  margin-top:2.2em;
+  padding:12px 14px;
+  background:#202020;
+  border-left:5px solid #d0d0d0;
+  border-radius:6px;
+}
+h3 {
+  font-size:1.2rem;
+  margin-top:1.7em;
+  color:#f4f4f4;
+}
+p { color:#ddd; }
+strong { color:#fff; }
+hr { border:0; border-top:1px solid #3a3a3a; margin:28px 0; }
+ul,ol { padding-left:26px; color:#ddd; }
+li { margin:5px 0; }
+blockquote {
+  margin:18px 0;
+  padding:13px 17px;
+  border-left:4px solid #aaa;
+  background:#202020;
+  color:#eee;
+  border-radius:5px;
+}
+code {
+  font-family:"Courier New", Courier, monospace;
+  background:#2a2a2a;
+  color:#f1f1f1;
+  padding:2px 5px;
+  border-radius:4px;
+  font-size:.92em;
+}
+.code-wrap {
+  margin:17px 0;
+  border:1px solid #3d3d3d;
+  border-radius:8px;
+  overflow:auto;
+  background:var(--code);
+}
+pre {
+  margin:0;
+  padding:17px;
+  min-width:max-content;
+  color:#eee;
+  font:14px/1.65 "Courier New", Courier, monospace;
+}
+pre code {
+  background:transparent;
+  padding:0;
+  color:inherit;
+}
+.table-wrap {
+  width:100%;
+  overflow-x:auto;
+  margin:18px 0;
+}
+table {
+  width:100%;
+  min-width:600px;
+  border-collapse:collapse;
+  background:#191919;
+}
+th,td {
+  border:1px solid #444;
+  padding:10px 12px;
+  text-align:left;
+  vertical-align:top;
+}
+th {
+  background:#303030;
+  color:#fff;
+  font-weight:700;
+}
+td { color:#ddd; }
+tr:nth-child(even) td { background:#1e1e1e; }
+a { color:#eee; }
+footer {
+  text-align:center;
+  color:#999;
+  padding:25px;
+  border-top:1px solid #2e2e2e;
+}
+mark {
+  background:#d8d8d8;
+  color:#000;
+  padding:1px 3px;
+  border-radius:2px;
+}
+.hidden { display:none !important; }
+@media (max-width:700px) {
+  header { padding:30px 15px 25px; }
+  main { width:min(100% - 18px, 1100px); margin-top:18px; }
+  article { padding:16px; border-radius:8px; }
+  h2 { font-size:1.3rem; }
+  pre { font-size:12.5px; padding:13px; }
+  th,td { padding:8px; font-size:13px; }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>Complete Packet Tracer Guide</h1>
+  <p>Router DHCP • DHCP Relay • Dedicated DHCP Server • DNS • HTTP Server</p>
+</header>
+
+<div class="toolbar">
+  <div class="toolbar-inner">
+    <input id="search" type="search" placeholder="Search this guide..." aria-label="Search this guide">
+  </div>
+</div>
+
+<main>
+<article id="content">
+<p>Absolutely. Here is the <strong>final complete version</strong>, using the conditions we established:</p>
+<ul>
+<li><strong>Network 1 / DNS Server network → Router DHCP</strong></li>
+<li><strong>Network 2 / HTTP Server network → DHCP Relay</strong></li>
+<li><strong>Network 3 / DHCP Server network → Dedicated DHCP Server</strong></li>
+<li>DHCP services <strong>stay ON</strong></li>
+<li><code>.1–.10</code> are reserved</li>
+<li>DHCP clients start at <code>.11</code></li>
+<li>DNS is <code>192.168.1.254</code></li>
+<li>DHCP Server is <code>192.168.3.254</code></li>
+<li>HTTP Server is <code>192.168.3.253</code></li>
+<li><code>www.dns.com</code> resolves to <code>192.168.3.253</code></li>
+<li>DHCP Relay uses <code>ip helper-address 192.168.3.254</code></li>
+<li>Every configuration includes <strong>what to enter, where to enter it, and why</strong></li>
+</ul>
+<h1>COMPLETE PACKET TRACER GUIDE</h1>
+<h2>1. Final Topology</h2>
+<p>Use:</p>
+<ul>
+<li>1 × Cisco 2911 Router: <strong>R1</strong></li>
+<li>3 × Switches: <strong>S1, S2, S3</strong></li>
+<li>1 × DNS Server</li>
+<li>1 × DHCP Server</li>
+<li>1 × HTTP Server</li>
+<li>6 × PCs</li>
+</ul>
+<h3>Topology</h3>
+<div class="code-wrap"><pre><code class="language-text">                         R1
+                  Cisco 2911 Router
+                  /      |       \
+               G0/1    G0/2     G0/0
+                /        |         \
+              S1         S2         S3
+             / | \      / \       / | | \
+           DNS PC0 PC1 PC2 PC3  DHCP HTTP PC4 PC5
+</code></pre></div>
+<hr>
+<h1>2. Network Plan</h1>
+<div class="table-wrap"><table><thead><tr><th>Network</th><th>Subnet</th><th>Gateway</th><th>DHCP Method</th></tr></thead><tbody>
+<tr><td>Network 1</td><td><code>192.168.1.0/24</code></td><td><code>192.168.1.1</code></td><td>Router DHCP</td></tr>
+<tr><td>Network 2</td><td><code>192.168.2.0/24</code></td><td><code>192.168.2.1</code></td><td>DHCP Relay</td></tr>
+<tr><td>Network 3</td><td><code>192.168.3.0/24</code></td><td><code>192.168.3.1</code></td><td>Dedicated DHCP Server</td></tr>
+</tbody></table></div>
+<h3>Servers</h3>
+<div class="code-wrap"><pre><code class="language-text">DNS Server
+192.168.1.254
+
+DHCP Server
+192.168.3.254
+
+HTTP Server
+192.168.3.253
+</code></pre></div>
+<hr>
+<h1>3. Connect the Devices</h1>
+<p>Use <strong>Copper Straight-Through</strong> cables.</p>
+<h3>Router to switches</h3>
+<div class="code-wrap"><pre><code class="language-text">R1 G0/1 → S1 G0/1
+R1 G0/2 → S2 G0/2
+R1 G0/0 → S3 G0/1
+</code></pre></div>
+<h3>S1 — DNS network</h3>
+<div class="code-wrap"><pre><code class="language-text">DNS Server → S1 Fa0/1
+PC0        → S1 Fa0/2
+PC1        → S1 Fa0/3
+</code></pre></div>
+<h3>S2 — Relay network</h3>
+<div class="code-wrap"><pre><code class="language-text">PC2 → S2 Fa0/1
+PC3 → S2 Fa0/2
+</code></pre></div>
+<h3>S3 — DHCP Server network</h3>
+<div class="code-wrap"><pre><code class="language-text">DHCP Server → S3 Fa0/1
+HTTP Server → S3 Fa0/2
+PC4         → S3 Fa0/3
+PC5         → S3 Fa0/4
+</code></pre></div>
+<p>Wait for the links to become green.</p>
+<hr>
+<h1>4. Configure R1's Three Interfaces</h1>
+<p>Click:</p>
+<p><strong>R1 → CLI</strong></p>
+<p>If asked:</p>
+<div class="code-wrap"><pre><code class="language-text">Would you like to enter the initial configuration dialog?
+</code></pre></div>
+<p>enter:</p>
+<div class="code-wrap"><pre><code class="language-text">no
+</code></pre></div>
+<p>Then:</p>
+<div class="code-wrap"><pre><code class="language-cisco">enable
+configure terminal
+</code></pre></div>
+<h2>G0/1 — Network 1</h2>
+<div class="code-wrap"><pre><code class="language-cisco">interface gigabitEthernet 0/1
+ip address 192.168.1.1 255.255.255.0
+no shutdown
+exit
+</code></pre></div>
+<p><strong>Why?</strong></p>
+<p>This makes R1's Network 1 gateway:</p>
+<div class="code-wrap"><pre><code class="language-text">192.168.1.1
+</code></pre></div>
+<hr>
+<h2>G0/2 — Network 2</h2>
+<div class="code-wrap"><pre><code class="language-cisco">interface gigabitEthernet 0/2
+ip address 192.168.2.1 255.255.255.0
+no shutdown
+exit
+</code></pre></div>
+<p><strong>Why?</strong></p>
+<p>This becomes the gateway for Network 2.</p>
+<hr>
+<h2>G0/0 — Network 3</h2>
+<div class="code-wrap"><pre><code class="language-cisco">interface gigabitEthernet 0/0
+ip address 192.168.3.1 255.255.255.0
+no shutdown
+exit
+</code></pre></div>
+<p><strong>Why?</strong></p>
+<p>This becomes the gateway for Network 3.</p>
+<p>Save:</p>
+<div class="code-wrap"><pre><code class="language-cisco">end
+copy running-config startup-config
+</code></pre></div>
+<p>Press <strong>Enter</strong> if asked for the destination filename.</p>
+<hr>
+<h1>5. Verify R1</h1>
+<p>Run:</p>
+<div class="code-wrap"><pre><code class="language-cisco">show ip interface brief
+</code></pre></div>
+<p>You want:</p>
+<div class="code-wrap"><pre><code class="language-text">G0/0    192.168.3.1    up    up
+G0/1    192.168.1.1    up    up
+G0/2    192.168.2.1    up    up
+</code></pre></div>
+<p>If an interface says <code>administratively down</code>, configure:</p>
+<div class="code-wrap"><pre><code class="language-cisco">interface gigabitEthernet X/X
+no shutdown
+</code></pre></div>
+<hr>
+<h1>6. Configure the DNS Server</h1>
+<p>Click:</p>
+<p><strong>DNS Server → Desktop → IP Configuration</strong></p>
+<p>Choose <strong>Static</strong>.</p>
+<p>Enter:</p>
+<div class="code-wrap"><pre><code class="language-text">IP Address:       192.168.1.254
+Subnet Mask:      255.255.255.0
+Default Gateway: 192.168.1.1
+DNS Server:       192.168.1.254
+</code></pre></div>
+<h3>Why static?</h3>
+<p>The DNS Server must always remain at the same address because all clients need to know where the DNS service is.</p>
+<hr>
+<h1>7. Turn ON DNS</h1>
+<p>Go:</p>
+<p><strong>DNS Server → Services → DNS</strong></p>
+<p>Set:</p>
+<div class="code-wrap"><pre><code class="language-text">DNS Service: ON
+</code></pre></div>
+<p>Now add:</p>
+<div class="code-wrap"><pre><code class="language-text">Name:     www.dns.com
+Address:  192.168.3.253
+</code></pre></div>
+<p>Click <strong>Add</strong>.</p>
+<h2>Why this exact configuration?</h2>
+<p>A computer normally needs an IP address to reach a server.</p>
+<p>We want users to type:</p>
+<div class="code-wrap"><pre><code class="language-text">www.dns.com
+</code></pre></div>
+<p>instead of:</p>
+<div class="code-wrap"><pre><code class="language-text">192.168.3.253
+</code></pre></div>
+<p>Therefore, the DNS Server needs this record:</p>
+<div class="code-wrap"><pre><code class="language-text">www.dns.com → 192.168.3.253
+</code></pre></div>
+<p><strong>192.168.3.253 is the HTTP Server.</strong></p>
+<p>DNS does not host the webpage. It only tells the PC where the webpage is located.</p>
+<p>So:</p>
+<div class="code-wrap"><pre><code class="language-text">DNS Server
+192.168.1.254
+      │
+      │ "www.dns.com = 192.168.3.253"
+      ▼
+HTTP Server
+192.168.3.253
+</code></pre></div>
+<hr>
+<h1>8. Configure the HTTP Server</h1>
+<p>Click:</p>
+<p><strong>HTTP Server → Desktop → IP Configuration</strong></p>
+<p>Choose <strong>Static</strong>.</p>
+<p>Enter:</p>
+<div class="code-wrap"><pre><code class="language-text">IP Address:       192.168.3.253
+Subnet Mask:      255.255.255.0
+Default Gateway: 192.168.3.1
+DNS Server:       192.168.1.254
+</code></pre></div>
+<p>Go to:</p>
+<p><strong>Services → HTTP</strong></p>
+<p>Make sure:</p>
+<div class="code-wrap"><pre><code class="language-text">HTTP: ON
+</code></pre></div>
+<p>The HTTP Server is the actual server that hosts the webpage.</p>
+<hr>
+<h1>9. Configure the DHCP Server</h1>
+<p>Click:</p>
+<p><strong>DHCP Server → Desktop → IP Configuration</strong></p>
+<p>Choose <strong>Static</strong>.</p>
+<p>Enter:</p>
+<div class="code-wrap"><pre><code class="language-text">IP Address:       192.168.3.254
+Subnet Mask:      255.255.255.0
+Default Gateway: 192.168.3.1
+DNS Server:       192.168.1.254
+</code></pre></div>
+<h3>Why static?</h3>
+<p>Because R1's DHCP Relay needs to know exactly where the DHCP Server is:</p>
+<div class="code-wrap"><pre><code class="language-text">192.168.3.254
+</code></pre></div>
+<hr>
+<h1>10. Turn ON DHCP Service</h1>
+<p>Go:</p>
+<p><strong>DHCP Server → Services → DHCP</strong></p>
+<p>Set:</p>
+<div class="code-wrap"><pre><code class="language-text">DHCP Service: ON
+</code></pre></div>
+<p><strong>Do not turn it OFF.</strong></p>
+<p>This server will provide DHCP service for Network 2 and Network 3.</p>
+<hr>
+<h1>11. Create DHCP Pool for Network 2</h1>
+<p>On the DHCP Server, enter:</p>
+<div class="code-wrap"><pre><code class="language-text">Pool Name:        NETWORK2
+Default Gateway:  192.168.2.1
+DNS Server:       192.168.1.254
+Start IP Address: 192.168.2.11
+Subnet Mask:      255.255.255.0
+Maximum Users:    243
+</code></pre></div>
+<p>Click <strong>Add</strong>.</p>
+<h3>Why?</h3>
+<p>Network 2 is:</p>
+<div class="code-wrap"><pre><code class="language-text">192.168.2.0/24
+</code></pre></div>
+<p>and its gateway is:</p>
+<div class="code-wrap"><pre><code class="language-text">192.168.2.1
+</code></pre></div>
+<p>We reserve <code>.1–.10</code>, so DHCP starts at:</p>
+<div class="code-wrap"><pre><code class="language-text">192.168.2.11
+</code></pre></div>
+<hr>
+<h1>12. Create DHCP Pool for Network 3</h1>
+<p>Create:</p>
+<div class="code-wrap"><pre><code class="language-text">Pool Name:        NETWORK3
+Default Gateway:  192.168.3.1
+DNS Server:       192.168.1.254
+Start IP Address: 192.168.3.11
+Subnet Mask:      255.255.255.0
+Maximum Users:    242
+</code></pre></div>
+<p>Click <strong>Add</strong>.</p>
+<h3>Why 242?</h3>
+<p>Available client addresses are:</p>
+<div class="code-wrap"><pre><code class="language-text">192.168.3.11
+through
+192.168.3.252
+</code></pre></div>
+<p>That's 242 addresses.</p>
+<p>We must preserve:</p>
+<div class="code-wrap"><pre><code class="language-text">192.168.3.253 = HTTP Server
+192.168.3.254 = DHCP Server
+</code></pre></div>
+<hr>
+<h1>13. Configure Router DHCP for Network 1</h1>
+<p>This is <strong>DHCP Method #1 — Router DHCP</strong>.</p>
+<p>Go:</p>
+<p><strong>R1 → CLI</strong></p>
+<p>Enter:</p>
+<div class="code-wrap"><pre><code class="language-cisco">enable
+configure terminal
+</code></pre></div>
+<p>Reserve <code>.1–.10</code>:</p>
+<div class="code-wrap"><pre><code class="language-cisco">ip dhcp excluded-address 192.168.1.1 192.168.1.10
+</code></pre></div>
+<p>Reserve the DNS Server:</p>
+<div class="code-wrap"><pre><code class="language-cisco">ip dhcp excluded-address 192.168.1.254
+</code></pre></div>
+<p>Now create the DHCP pool:</p>
+<div class="code-wrap"><pre><code class="language-cisco">ip dhcp pool NETWORK1
+network 192.168.1.0 255.255.255.0
+default-router 192.168.1.1
+dns-server 192.168.1.254
+exit
+</code></pre></div>
+<p>Save:</p>
+<div class="code-wrap"><pre><code class="language-cisco">end
+copy running-config startup-config
+</code></pre></div>
+<hr>
+<h1>14. Understand the Network 1 Exclusions</h1>
+<p>This:</p>
+<div class="code-wrap"><pre><code class="language-cisco">ip dhcp excluded-address 192.168.1.1 192.168.1.10
+</code></pre></div>
+<p>means R1 will <strong>not</strong> give these addresses to clients:</p>
+<div class="code-wrap"><pre><code class="language-text">192.168.1.1
+192.168.1.2
+192.168.1.3
+...
+192.168.1.10
+</code></pre></div>
+<p>Therefore the first possible DHCP address is:</p>
+<div class="code-wrap"><pre><code class="language-text">192.168.1.11
+</code></pre></div>
+<p>And:</p>
+<div class="code-wrap"><pre><code class="language-cisco">ip dhcp excluded-address 192.168.1.254
+</code></pre></div>
+<p>protects:</p>
+<div class="code-wrap"><pre><code class="language-text">192.168.1.254
+</code></pre></div>
+<p>because it belongs to the DNS Server.</p>
+<hr>
+<h1>15. Configure DHCP Relay for Network 2</h1>
+<p>This is <strong>DHCP Method #2 — DHCP Relay</strong>.</p>
+<p>The DHCP Server is on Network 3:</p>
+<div class="code-wrap"><pre><code class="language-text">192.168.3.254
+</code></pre></div>
+<p>But the clients are on Network 2:</p>
+<div class="code-wrap"><pre><code class="language-text">192.168.2.0/24
+</code></pre></div>
+<p>DHCP broadcasts normally cannot cross a router.</p>
+<p>Therefore, R1 needs a helper address.</p>
+<p>Go to:</p>
+<p><strong>R1 → CLI</strong></p>
+<div class="code-wrap"><pre><code class="language-cisco">enable
+configure terminal
+</code></pre></div>
+<p>Then:</p>
+<div class="code-wrap"><pre><code class="language-cisco">interface gigabitEthernet 0/2
+ip helper-address 192.168.3.254
+exit
+</code></pre></div>
+<p>Save:</p>
+<div class="code-wrap"><pre><code class="language-cisco">end
+copy running-config startup-config
+</code></pre></div>
+<h3>Why G0/2?</h3>
+<p>Because:</p>
+<div class="code-wrap"><pre><code class="language-text">R1 G0/2
+     ↓
+Network 2
+192.168.2.0/24
+</code></pre></div>
+<p>The helper tells R1:</p>
+<blockquote>"Forward DHCP requests received from Network 2 to the DHCP Server at 192.168.3.254."</blockquote>
+<hr>
+<h1>16. Why the Helper Address Is Necessary</h1>
+<p>Without the helper:</p>
+<div class="code-wrap"><pre><code class="language-text">PC2
+ ↓
+DHCP Broadcast
+ ↓
+S2
+ ↓
+R1
+ ✖
+</code></pre></div>
+<p>The router does not normally forward the DHCP broadcast.</p>
+<p>With:</p>
+<div class="code-wrap"><pre><code class="language-cisco">ip helper-address 192.168.3.254
+</code></pre></div>
+<p>it becomes:</p>
+<div class="code-wrap"><pre><code class="language-text">PC2
+ ↓
+S2
+ ↓
+R1 G0/2
+ ↓
+DHCP Relay
+ ↓
+192.168.3.254
+ ↓
+DHCP Server
+</code></pre></div>
+<p>The DHCP Server then uses the:</p>
+<div class="code-wrap"><pre><code class="language-text">NETWORK2
+</code></pre></div>
+<p>pool and gives PC2 an address such as:</p>
+<div class="code-wrap"><pre><code class="language-text">192.168.2.11
+</code></pre></div>
+<hr>
+<h1>17. Do NOT Add Helper Addresses Everywhere</h1>
+<p>You only need:</p>
+<div class="code-wrap"><pre><code class="language-cisco">interface gigabitEthernet 0/2
+ip helper-address 192.168.3.254
+</code></pre></div>
+<p>You <strong>do not</strong> need it on G0/1 because R1 itself provides DHCP for Network 1.</p>
+<p>You <strong>do not</strong> need it on G0/0 because the DHCP Server is directly connected to Network 3.</p>
+<hr>
+<h1>18. Configure All PCs as DHCP</h1>
+<p>For every PC:</p>
+<p><strong>PC → Desktop → IP Configuration → DHCP</strong></p>
+<p>Do not manually enter an IP.</p>
+<hr>
+<h2>PC0 and PC1 — Network 1</h2>
+<p>Expected:</p>
+<div class="code-wrap"><pre><code class="language-text">IP:       192.168.1.11+
+Gateway:  192.168.1.1
+DNS:      192.168.1.254
+</code></pre></div>
+<p>These demonstrate:</p>
+<p><strong>Router DHCP</strong></p>
+<hr>
+<h2>PC2 and PC3 — Network 2</h2>
+<p>Expected:</p>
+<div class="code-wrap"><pre><code class="language-text">IP:       192.168.2.11+
+Gateway:  192.168.2.1
+DNS:      192.168.1.254
+</code></pre></div>
+<p>These demonstrate:</p>
+<p><strong>DHCP Relay</strong></p>
+<hr>
+<h2>PC4 and PC5 — Network 3</h2>
+<p>Expected:</p>
+<div class="code-wrap"><pre><code class="language-text">IP:       192.168.3.11+
+Gateway:  192.168.3.1
+DNS:      192.168.1.254
+</code></pre></div>
+<p>These demonstrate:</p>
+<p><strong>Dedicated DHCP Server</strong></p>
+<hr>
+<h1>19. Check PC Addresses</h1>
+<p>On every PC:</p>
+<p><strong>Desktop → Command Prompt</strong></p>
+<p>Run:</p>
+<div class="code-wrap"><pre><code class="language-cmd">ipconfig
+</code></pre></div>
+<p>Check that the PC received the correct network.</p>
+<h3>PC0/PC1</h3>
+<p>Should be:</p>
+<div class="code-wrap"><pre><code class="language-text">192.168.1.11+
+</code></pre></div>
+<h3>PC2/PC3</h3>
+<p>Should be:</p>
+<div class="code-wrap"><pre><code class="language-text">192.168.2.11+
+</code></pre></div>
+<h3>PC4/PC5</h3>
+<p>Should be:</p>
+<div class="code-wrap"><pre><code class="language-text">192.168.3.11+
+</code></pre></div>
+<p>If a PC gets:</p>
+<div class="code-wrap"><pre><code class="language-text">169.254.x.x
+</code></pre></div>
+<p>DHCP failed.</p>
+<hr>
+<h1>20. Test the Gateways</h1>
+<p>From PC0:</p>
+<div class="code-wrap"><pre><code class="language-cmd">ping 192.168.1.1
+</code></pre></div>
+<p>From PC2:</p>
+<div class="code-wrap"><pre><code class="language-cmd">ping 192.168.2.1
+</code></pre></div>
+<p>From PC4:</p>
+<div class="code-wrap"><pre><code class="language-cmd">ping 192.168.3.1
+</code></pre></div>
+<p>Each should receive replies.</p>
+<hr>
+<h1>21. Test the Servers</h1>
+<p>From a PC, test:</p>
+<div class="code-wrap"><pre><code class="language-cmd">ping 192.168.1.254
+</code></pre></div>
+<p>DNS Server.</p>
+<p>Then:</p>
+<div class="code-wrap"><pre><code class="language-cmd">ping 192.168.3.254
+</code></pre></div>
+<p>DHCP Server.</p>
+<p>Then:</p>
+<div class="code-wrap"><pre><code class="language-cmd">ping 192.168.3.253
+</code></pre></div>
+<p>HTTP Server.</p>
+<p>All should reply.</p>
+<hr>
+<h1>22. Verify Router DHCP</h1>
+<p>On R1:</p>
+<div class="code-wrap"><pre><code class="language-cisco">show ip dhcp binding
+</code></pre></div>
+<p>You should see Network 1 clients.</p>
+<p>For example:</p>
+<div class="code-wrap"><pre><code class="language-text">192.168.1.11
+192.168.1.12
+</code></pre></div>
+<p>Then:</p>
+<div class="code-wrap"><pre><code class="language-cisco">show ip dhcp pool
+</code></pre></div>
+<p>You should see:</p>
+<div class="code-wrap"><pre><code class="language-text">NETWORK1
+</code></pre></div>
+<hr>
+<h1>23. Verify DHCP Relay</h1>
+<p>On R1:</p>
+<div class="code-wrap"><pre><code class="language-cisco">show running-config
+</code></pre></div>
+<p>Find:</p>
+<div class="code-wrap"><pre><code class="language-cisco">interface GigabitEthernet0/2
+ip address 192.168.2.1 255.255.255.0
+ip helper-address 192.168.3.254
+</code></pre></div>
+<p>That confirms your relay configuration.</p>
+<hr>
+<h1>24. Verify DHCP Server</h1>
+<p>Go:</p>
+<p><strong>DHCP Server → Services → DHCP</strong></p>
+<p>Confirm:</p>
+<div class="code-wrap"><pre><code class="language-text">DHCP Service: ON
+</code></pre></div>
+<p>And:</p>
+<div class="code-wrap"><pre><code class="language-text">NETWORK2
+NETWORK3
+</code></pre></div>
+<p>both exist.</p>
+<hr>
+<h1>25. Test DNS</h1>
+<p>From a PC:</p>
+<div class="code-wrap"><pre><code class="language-cmd">ping www.dns.com
+</code></pre></div>
+<p>The important thing is that the name resolves to:</p>
+<div class="code-wrap"><pre><code class="language-text">192.168.3.253
+</code></pre></div>
+<p>because our DNS record is:</p>
+<div class="code-wrap"><pre><code class="language-text">www.dns.com → 192.168.3.253
+</code></pre></div>
+<hr>
+<h1>26. Final Browser Test</h1>
+<p>On a PC:</p>
+<p><strong>Desktop → Web Browser</strong></p>
+<p>Enter:</p>
+<div class="code-wrap"><pre><code class="language-text">http://www.dns.com
+</code></pre></div>
+<p>Click <strong>Go</strong>.</p>
+<p>The complete process is:</p>
+<div class="code-wrap"><pre><code class="language-text">PC
+ │
+ │ "I want www.dns.com"
+ ▼
+DNS Server
+192.168.1.254
+ │
+ │ "www.dns.com = 192.168.3.253"
+ ▼
+HTTP Server
+192.168.3.253
+ │
+ ▼
+Web Page
+</code></pre></div>
+<p>If the webpage appears, your <strong>DNS + HTTP configuration is working</strong>.</p>
+<hr>
+<h1>27. Final Verification Checklist</h1>
+<p>Before submitting your Packet Tracer file, verify all of these.</p>
+<h3>R1</h3>
+<div class="code-wrap"><pre><code class="language-text">[✓] G0/1 = 192.168.1.1
+[✓] G0/2 = 192.168.2.1
+[✓] G0/0 = 192.168.3.1
+[✓] All interfaces UP/UP
+</code></pre></div>
+<h3>Router DHCP</h3>
+<div class="code-wrap"><pre><code class="language-text">[✓] NETWORK1 pool exists
+[✓] .1–.10 excluded
+[✓] .254 excluded
+[✓] DHCP starts at .11
+[✓] DNS = 192.168.1.254
+</code></pre></div>
+<h3>DHCP Relay</h3>
+<div class="code-wrap"><pre><code class="language-text">[✓] G0/2 has helper address
+[✓] helper = 192.168.3.254
+</code></pre></div>
+<h3>DNS Server</h3>
+<div class="code-wrap"><pre><code class="language-text">[✓] IP = 192.168.1.254
+[✓] DNS = ON
+[✓] www.dns.com exists
+[✓] www.dns.com → 192.168.3.253
+</code></pre></div>
+<h3>DHCP Server</h3>
+<div class="code-wrap"><pre><code class="language-text">[✓] IP = 192.168.3.254
+[✓] DHCP = ON
+[✓] NETWORK2 pool exists
+[✓] NETWORK3 pool exists
+</code></pre></div>
+<h3>HTTP Server</h3>
+<div class="code-wrap"><pre><code class="language-text">[✓] IP = 192.168.3.253
+[✓] HTTP = ON
+[✓] Webpage exists
+</code></pre></div>
+<h3>PCs</h3>
+<div class="code-wrap"><pre><code class="language-text">[✓] All PCs set to DHCP
+[✓] Network 1 PCs receive 192.168.1.11+
+[✓] Network 2 PCs receive 192.168.2.11+
+[✓] Network 3 PCs receive 192.168.3.11+
+</code></pre></div>
+<h3>Final test</h3>
+<div class="code-wrap"><pre><code class="language-text">[✓] Ping gateways
+[✓] Ping DNS Server
+[✓] Ping DHCP Server
+[✓] Ping HTTP Server
+[✓] ping www.dns.com
+[✓] Open http://www.dns.com
+</code></pre></div>
+<h2>The three DHCP methods you should be able to explain</h2>
+<p><strong>1. Router DHCP</strong></p>
+<blockquote>R1 directly assigns IP addresses to Network 1 clients.</blockquote>
+<p><strong>2. DHCP Relay</strong></p>
+<blockquote>R1 forwards DHCP requests from Network 2 to the dedicated DHCP Server on Network 3 using <code>ip helper-address 192.168.3.254</code>.</blockquote>
+<p><strong>3. Dedicated DHCP Server</strong></p>
+<blockquote>The dedicated DHCP Server directly serves Network 3 and also provides the DHCP pool used by Network 2 through the relay.</blockquote>
+<p>And importantly, <strong>you leave the DHCP service ON</strong>. You are not switching DHCP methods globally; you're demonstrating <strong>different DHCP methods on different networks at the same time</strong>.</p>
+</article>
+</main>
+
+<footer>
+  Complete Packet Tracer Guide • Black &amp; Light Gray Edition
+</footer>
+
+<script>
+const search = document.getElementById('search');
+const content = document.getElementById('content');
+const originalHTML = content.innerHTML;
+
+search.addEventListener('input', () => {
+  const query = search.value.trim().toLowerCase();
+  if (!query) {
+    content.innerHTML = originalHTML;
+    return;
+  }
+  // Search section-level blocks without destroying code formatting.
+  const blocks = Array.from(content.children);
+  let any = false;
+  blocks.forEach(block => {
+    const match = block.textContent.toLowerCase().includes(query);
+    block.classList.toggle('hidden', !match);
+    if (match) any = true;
+  });
+  if (!any) {
+    content.innerHTML = '<p id="no-results"><strong>No matching content found.</strong> Try another keyword.</p>';
+  }
+});
+</script>
+</body>
+</html>
